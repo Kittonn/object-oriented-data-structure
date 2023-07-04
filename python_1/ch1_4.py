@@ -1,9 +1,9 @@
-print(' ***Function Odd List***')
+def odd_list(al):
+    return [i for i in al if i % 2 != 0]
 
-nums = [int(i) for i in input('Enter list numbers : ').split()]
 
-print('Input list : ', nums)
+print(" ***Function Odd List***")
+ls = [int(e) for e in input("Enter list numbers : ").split()]
 
-odd_list = [i for i in nums if i % 2 != 0]
-
-print('Output list : ', odd_list)
+opls = odd_list(ls)
+print("Input list : ", ls, "\nOutput list : ", opls)
