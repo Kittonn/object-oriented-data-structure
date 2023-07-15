@@ -1,24 +1,45 @@
-def is_valid_parentheses(parens):
+class Stack:
+  def __init__(self):
+    self.stack = []
+
+  def __str__(self):
+    if self.size() == 0:
+      return f"{self.size()}\nPerfect ! ! !"
+    else:
+      return f"{self.size()}"
+
+  def pop(self):
+    return self.stack.pop() if not self.is_empty() else None
+
+  def push(self, item):
+    return self.stack.append(item)
+
+  def peek(self):
+    return self.stack[-1] if not self.is_empty() else None
+
+  def is_empty(self):
+    return self.stack == []
+
+  def size(self):
+    return len(self.stack)
+
+
+def parentheses_matching(parentheses):
+  stack = Stack()
   opening = ['(', '[']
   closing = [')', ']']
 
-  stack = []
-
-  for i in parens:
+  for i in parentheses:
     if i in opening:
-      stack.append(i)
+      stack.push(i)
     elif i in closing:
-      if stack and stack[-1] == opening[closing.index(i)]:
+      if not stack.is_empty() and stack.peek() == opening[closing.index(i)]:
         stack.pop()
-      else: 
-        stack.append(i)
-  
-  return len(stack)
+      else:
+        stack.push(i)
 
-parens = input('Enter Input : ')
-valid = is_valid_parentheses(parens)
+  print(stack)
 
-if valid == 0:
-  print(f'{valid}\nPerfect ! ! !')
-else:
-  print(valid)
+
+if __name__ == "__main__":
+  parentheses_matching(input('Enter Input : '))
