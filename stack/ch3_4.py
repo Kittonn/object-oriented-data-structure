@@ -21,10 +21,9 @@ def into_the_woods(n):
   stack = Stack()
   for i in n:
     if i[0] == 'A':
-      while not stack.is_empty() and stack.peek() < int(i[1]):
+      while not stack.is_empty() and stack.peek() <= int(i[1]):
         stack.pop()
-      if stack.peek() != int(i[1]):
-        stack.push(int(i[1]))
+      stack.push(int(i[1]))
     elif i[0] == 'B':
       print(stack.size())
 
