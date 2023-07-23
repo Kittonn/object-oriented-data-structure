@@ -36,6 +36,7 @@ def basic_queue(commands):
 
 
 if __name__ == '__main__':
-  commands = [command.split() for command in input('Enter Input : ').split(",")]
+  commands = [command.split()
+              for command in input('Enter Input : ').split(",")]
 
   basic_queue(commands)
