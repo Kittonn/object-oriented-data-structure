@@ -137,40 +137,40 @@ class LinkedList:
       while cur is not None and count < pos - 1:
         cur = cur.next
         count += 1
-      
+
       list2.head = cur.next
       cur.next = None
-      
+
       list1.head = self.head
       self.head = None
-      
+
       cur1 = list1.head
       cur2 = list2.head
-      
+
       while cur1 is not None and cur2 is not None:
         self.append(cur1.value)
         self.append(cur2.value)
         cur1 = cur1.next
         cur2 = cur2.next
-      
+
       while cur1 is not None:
         self.append(cur1.value)
         cur1 = cur1.next
-        
+
       while cur2 is not None:
         self.append(cur2.value)
         cur2 = cur2.next
 
-  def de_riffle(self, pos ,size):
+  def de_riffle(self, pos, size):
     if self.isEmpty() or pos < 0 or pos >= self.size():
       return None
 
     else:
       if pos < size / 2:
-        pull_out = pos -1
+        pull_out = pos - 1
       elif pos >= size / 2:
         pull_out = size - pos
-        
+
       list1 = LinkedList()
       cur = self.head
       while cur is not None:
@@ -178,28 +178,28 @@ class LinkedList:
           list1.append(cur.next)
           cur.next = cur.next.next
         cur = cur.next
-        
+
       if list1.isEmpty():
         return None
-      
+
       cur = list1.head
       while cur.next is not None:
         cur = cur.next
       cur.next = None
-      
+
       if pos < size / 2:
         cur = self.head
         count = 0
         while cur is not None and count < pos - 1:
           cur = cur.next
           count += 1
-          
+
         search_cur = cur
-        
+
         cur = list1.head
         while cur.next is not None:
           cur = cur.next
-        
+
         cur.next = search_cur.next
         search_cur.next = list1.head
       elif pos >= size / 2:
@@ -207,6 +207,7 @@ class LinkedList:
         while cur.next is not None:
           cur = cur.next
         cur.next = list1.head
+
 
 def createLL(LL):
   linked_list = LinkedList()
