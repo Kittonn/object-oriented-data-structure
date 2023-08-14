@@ -69,10 +69,10 @@ class LinkedList:
       removed_value = self.head.value
       self.head = self.head.next
     else:
-      prev = None
+      prev =  None
       cur = self.head
       count = 0
-      while cur is not None and count < pos:
+      while cur != None and count < pos:
         prev = cur
         cur = cur.next
         count += 1
