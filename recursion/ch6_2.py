@@ -1,5 +1,4 @@
 def check_parindrome(inputs, start, end):
-  print(start, inputs[start], end, inputs[end])
   if start == end:
     return True
   if inputs[start] != inputs[end]:
@@ -9,10 +8,11 @@ def check_parindrome(inputs, start, end):
   return True
 
 
-inputs = input("Enter Input : ")
-start, end = 0, len(inputs) - 1
-check = check_parindrome(inputs, start, end)
-if check == True:
-  print(f"'{inputs}' is palindrome")
-else:
-  print(f"'{inputs}' is not palindrome")
+if __name__ == "__main__":
+  inputs = input("Enter Input : ")
+  start, end = 0, len(inputs) - 1
+  check = check_parindrome(inputs, start, end)
+  if check == True:
+    print(f"'{inputs}' is palindrome")
+  else:
+    print(f"'{inputs}' is not palindrome")
