@@ -1,18 +1,14 @@
-def check_parindrome(inputs, start, end):
-  if start == end:
+def is_palindrome(start, end):
+  if start >= end:
     return True
   if inputs[start] != inputs[end]:
     return False
-  if start < end - 1:
-    return check_parindrome(inputs, start + 1, end - 1)
-  return True
+  return is_palindrome(start + 1, end - 1)
 
 
 if __name__ == "__main__":
-  inputs = input("Enter Input : ")
-  start, end = 0, len(inputs) - 1
-  check = check_parindrome(inputs, start, end)
-  if check == True:
-    print(f"'{inputs}' is palindrome")
+  inputs = input("Enter Input: ")
+  if is_palindrome(0, len(inputs) - 1):
+    print(f"'{inputs}' is a palindrome")
   else:
-    print(f"'{inputs}' is not palindrome")
+    print(f"'{inputs}' is not a palindrome")
