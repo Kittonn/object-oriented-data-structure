@@ -1,18 +1,22 @@
-def perket(inputs, s, b, n, min):
-  if n < 0:
-    return min
+def perket(s=1, b=0, n=0):
+  if n >= len(inputs):
+    return
+  else:
+    s *= inputs[n][0]
+    b += inputs[n][1]
+    
+    result = abs(s - b)
+    
+    global m
+    m = min(result, m)
 
-  s *= inputs[n][0]
-  b += inputs[n][1]
-
-  if abs(s - b) < min:
-    min = abs(s - b)
-
-  return perket(inputs, s, b, n - 1, min)
+    perket(s, b, n + 1)
 
 
 if __name__ == "__main__":
   inputs = [[int(i) for i in i.split()]
             for i in input("Enter Input : ").split(',')]
-  m = perket(inputs, 1, 0, len(inputs) - 1, 1000000001)
+  m = int(10e9)
+
+  perket(1, 0, len(inputs) - 1)
   print(m)
