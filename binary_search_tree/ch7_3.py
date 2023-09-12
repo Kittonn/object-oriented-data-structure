@@ -1,61 +1,35 @@
-class Node:
-  def __init__(self, data):
-    self.data = data
-    self.left = None
-    self.right = None
+def find_max_path(idx, path):
+  global paths 
 
-class BinarySearchTree:
-  def __init__(self):
-    self.root = None
+  if idx > len(inputs) - 1:
+    if path not in paths:
+      paths.append(path)
+    return
 
-  def insert(self, data):
-    self.root = self._insert(self.root, data)
-
-  def _insert(self, node, data):
-    if node is None:
-      return Node(data)
-    if data < node.data:
-      node.left = self._insert(node.left, data)
-    elif data > node.data:
-      node.right = self._insert(node.right, data)
-    return node
- 
-  def print_breadth(self):
-    queue = [self.root]
-    while len(queue) > 0:
-      node = queue.pop(0)
-      print(node.data, end=' ')
-      if node.left is not None:
-        queue.append(node.left)
-      if node.right is not None:
-        queue.append(node.right)
   
-  def find_maximum_path(self):
-    return self._find_maximum_path(self.root)
+  path_left = path.copy()
+  path_right = path.copy()
+  path_left.append(inputs[idx])
+  path_right.append(inputs[idx])
+  find_max_path(idx * 2 +1, path_left)
+  find_max_path(idx * 2 +2, path_right)
 
-  def _find_maximum_path(self, node):
-    if node is None:
-      return []
-    
-    left = self._find_maximum_path(node.left)
-    right = self._find_maximum_path(node.right)
 
-    if sum(left) > sum(right):
-      return [node.data] + left
-    else:
-      return [node.data] + right
-    
-    
-    
 if __name__ == '__main__':
-  inputs = input('Enter tree: ').split()
-  tree = BinarySearchTree()
+  inputs = [int(i) for i in input('Enter tree: ').split()]
+  paths = []
 
-  for item in inputs:
-    tree.insert(int(item))
+  find_max_path(0, [])
 
-  print("Breadth : ", end='')
-  tree.print_breadth()
-  print()
+  max_path = []
+  max_sum = float('-inf')
+  for path in paths:
+    if sum(path) > max_sum:
+      max_sum = sum(path)
+      max_path = path
+  
+  print(f'Maximum path: {max_path}')
+    
+  
 
-  print(tree.find_maximum_path())
+  

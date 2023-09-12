@@ -6,7 +6,7 @@ class Node:
 
 class ExpressionTree:
   def __init__(self):
-    self.root = None
+    self.root = None  
 
   def build_tree(self, postfix):
     stack = []
