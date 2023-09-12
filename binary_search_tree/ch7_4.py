@@ -16,7 +16,7 @@ class BinarySearchTree:
       return Node(data)
     if data < node.data:
       node.left = self._insert(node.left, data)
-    elif data > node.data:
+    elif data >= node.data:
       node.right = self._insert(node.right, data)
     return node
   
