@@ -1,46 +1,98 @@
 class Node:
-    def __init__(self, freq, data, left=None, right=None, huff=None):
+    def __init__(self, data, freq, left=None, right=None):
         self.freq = freq
         self.data = data
         self.left = left
         self.right = right
 
+    def __str__(self):
+        return str(self.data)
 
-def calculate_frequency(input_string):
-    frequency = {}
 
-    for char in input_string:
-        if char in frequency:
-            frequency[char] += 1
+class Huffman:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, node, data, freq):
+        if node is None:
+            return Node(data, freq)
+        elif freq < node.freq:
+            node.left = self.insert(node.left, data, freq)
+        elif freq == node.freq:
+            if data < node.data:
+                node.left = self.insert(node.left, data, freq)
+            else:
+                node.right = self.insert(node.right, data, freq)
         else:
-            frequency[char] = 1
-    sorted_frequency = sorted(frequency.items(), key=lambda item: (-item[1], -ord(item[0])))
-    nodes = [Node(freq, data) for data, freq in sorted_frequency]
-    return nodes
+            node.right = self.insert(node.right, data, freq)
+        return node
 
-def build_huffman_tree(nodes):
-    while len(nodes) > 1:
-        left = nodes.pop()
-        right = nodes.pop()
-        freq = left.freq + right.freq
-        nodes.append(Node(freq, None, left, right))
-        nodes.sort(key=lambda node: node.freq, reverse=True)
-    
-    return nodes[0]
+    def inorder(self, node):
+        if node is None:
+            return []
 
-def generate_huffman_codes(node, bin_string='',huffman_codes={}):
-    if node.data is not None:
-        huffman_codes[node.data] = bin_string
-    if node.left:
-        generate_huffman_codes(node.left, bin_string + '0', huffman_codes)
-    if node.right:
-        generate_huffman_codes(node.right, bin_string + '1', huffman_codes)
-    return huffman_codes
+        return (
+            self.inorder(node.right)
+            + [Node(node.data, node.freq)]
+            + self.inorder(node.left)
+        )
+
+    def print_tree(self, node, level=0):
+        if node is not None:
+            self.print_tree(node.right, level + 1)
+            print("     " * level, node)
+            self.print_tree(node.left, level + 1)
+
+    def print_code(self, node, code=""):
+        s = ""
+        if node is not None:
+            s = self.print_code(node.right, code + "1")
+            if node.data != "*":
+                s += f"'{node.data}': '{code}'"
+            a = self.print_code(node.left, code + "0")
+            if a != "":
+                s += ", " + a
+        return s
+
+    def search(self, node, data, code=""):
+        if node is None:
+            return None
+        elif node.data == data:
+            return code
+        if node:
+            s = self.search(node.right, data, code + "1")
+            if s:
+                return s
+            s = self.search(node.left, data, code + "0")
+            if s:
+                return s
+
 
 if __name__ == "__main__":
-    user_input = input("Enter Input: ")
-    nodes = calculate_frequency(user_input)
-    root = build_huffman_tree(nodes)
-    huffman_codes = generate_huffman_codes(root)
+    inp = list(input("Enter Input : "))
+    s = set(inp)
 
-    print(huffman_codes)
+    h = Huffman()
+
+    for i in s:
+        h.root = h.insert(h.root, i, inp.count(i))
+
+    data = h.inorder(h.root)
+    
+    temp = [data.pop()]
+
+    while len(data) != 0 or len(temp) != 1:
+        if len(temp) > 1:
+            if data == [] or (data[-1].freq >= temp[0].freq + temp[1].freq):
+                a, b = temp.pop(0), temp.pop(0)
+                temp.append(Node("*", a.freq + b.freq, a, b))
+            else:
+                temp.append(data.pop())
+        else:
+            temp.append(data.pop())
+
+    print("{" + f'{h.print_code(temp[0], "")}' + "}")
+    h.print_tree(temp[0])
+    print("Encoded! : ", end="")
+    for key in inp:
+        print(h.search(temp[0], key, ""), end="")
