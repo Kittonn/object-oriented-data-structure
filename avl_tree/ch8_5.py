@@ -3,7 +3,8 @@ class Node:
         self.data = data
         self.left = None
         self.right = None
-        self.height = 1  
+        self.height = 1
+
 
 class AVL:
     def __init__(self):
@@ -71,13 +72,67 @@ class AVL:
             print("     " * level, node.data)
             self.printTree(node.left, level + 1)
 
+    def find_node(self, data):
+        return self._find_node(self.root, data)
+
+    def _find_node(self, node, data):
+        if node is None:
+            return None
+
+        if node.data == data:
+            return node
+
+        if data < node.data:
+            return self._find_node(node.left, data)
+        else:
+            return self._find_node(node.right, data)
+
+    def burn(self, data):
+        target = self.find_node(data)
+        if target is None:
+            print(f"There is no {data} in the tree.")
+            return
+
+        will_burn = [target]
+        burned = [target]
+
+        while will_burn:
+            for node in will_burn:
+                burned.append(node)
+                print(node.data, end=" ")
+            will_burn = self._burn(will_burn, burned)
+            print()
+
+    def _burn(self, will_burn, burned):
+        new_will_burn = []
+        for node in will_burn:
+            if node.left and node.left not in burned:
+                new_will_burn.append(node.left)
+            if node.right and node.right not in burned:
+                new_will_burn.append(node.right)
+        queue = [self.root]
+        while queue:
+            node = queue.pop(0)
+            if (
+                node.left in will_burn or node.right in will_burn
+            ) and node not in burned:
+                new_will_burn.append(node)
+
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        return new_will_burn
+
 
 if __name__ == "__main__":
-    inp = input("Enter Input : ").split()
+    arr, burn = input("Enter node and burn node : ").split("/")
+    arr = list(map(int, arr.split()))
+    burn = int(burn)
 
     tree = AVL()
-    for item in inp:
-        tree.insert(int(item))
-        print(f"Insert : ( {item} )")
-        tree.printTree(tree.root)
-        print('--------------------------------------------------')
+
+    for item in arr:
+        tree.insert(item)
+
+    tree.burn(burn)
